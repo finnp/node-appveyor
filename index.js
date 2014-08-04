@@ -1,5 +1,6 @@
 var request = require('request')
 var ghslug = require('github-slug')
+var Configstore = require('configstore');
 var EventEmitter = require('events').EventEmitter
 var extend = require('util').inherits
 var fs = require('fs')
@@ -9,7 +10,7 @@ extend(AppVeyor, EventEmitter)
 module.exports = AppVeyor
 
 function AppVeyor(configstore) {
-  this.configstore = configstore
+  this.configstore = configstore || new Configstore('appveyorjs')
   this.headers = {
     'User-Agent': 'node-appveyor'
   }

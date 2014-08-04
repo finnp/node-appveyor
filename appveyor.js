@@ -1,8 +1,7 @@
 #!/usr/bin/env node
-var AppVeyor = require('./index.js');
-var Configstore = require('configstore');
+var AppVeyor = require('./index.js')
 
-var appveyor = new AppVeyor(new Configstore('appveyorjs'));
+var appveyor = new AppVeyor()
 
 appveyor.on('error', function (error) {
   console.error(error)
