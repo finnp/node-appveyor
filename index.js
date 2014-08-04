@@ -75,6 +75,18 @@ AppVeyor.prototype.yml = function (stream) {
     from.pipe(stream)
 }
 
+AppVeyor.prototype.badge = function (stream) {
+  var self = this
+  ghslug(process.cwd(), function (err, slug) {
+    if(err) {
+      self.emit('error', err)
+      return
+    }
+    stream.write('[![Windows Build status](http://img.shields.io/appveyor/ci/' + slug + '.svg)]')
+    stream.write('(https://ci.appveyor.com/project/' + slug + '/branch/master)\n')
+  })
+}
+
 AppVeyor.prototype._getToken = function (cb) {
   var token = this.configstore.get('token')
   if(token) {

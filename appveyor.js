@@ -40,4 +40,10 @@ program.command('yml')
     appveyor.yml(process.stdout)
   })
   
+program.command('badge')
+  .help('print the text for the badge (shields.io)')
+  .callback(function (opts) {
+    appveyor.badge(process.stdout)
+  })
+  
 program.parse()
