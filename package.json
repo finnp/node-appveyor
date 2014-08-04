@@ -7,7 +7,7 @@
     "appveyor": "./appveyor.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test.js"
   },
   "repository": {
     "type": "git",
@@ -30,5 +30,9 @@
     "github-slug": "0.0.1",
     "nomnom": "^1.8.0",
     "request": "^2.39.0"
+  },
+  "devDependencies": {
+    "nock": "^0.43.0",
+    "tape": "^2.13.4"
   }
 }
