@@ -2,6 +2,8 @@ var request = require('request')
 var ghslug = require('github-slug')
 var EventEmitter = require('events').EventEmitter
 var extend = require('util').inherits
+var fs = require('fs')
+var path = require('path')
 
 extend(AppVeyor, EventEmitter)
 module.exports = AppVeyor
@@ -64,6 +66,13 @@ AppVeyor.prototype.hook = function () {
     })
   })
   
+}
+
+AppVeyor.prototype.yml = function (stream) {
+  var from = fs.createReadStream(path.join(__dirname, 'appveyor.yml'))
+  from.pipe(fs.createWriteStream(path.join(process.cwd(), 'appveyor.yml')))
+  if(stream) 
+    from.pipe(stream)
 }
 
 AppVeyor.prototype._getToken = function (cb) {

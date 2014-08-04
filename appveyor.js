@@ -34,4 +34,10 @@ program.command('hook')
     appveyor.hook()
   })
   
+program.command('yml')
+  .help('create a appveyor.yml file in the current directory')
+  .callback(function (opts) {
+    appveyor.yml(process.stdout)
+  })
+  
 program.parse()
