@@ -1,4 +1,7 @@
 # AppVeyor
+Mac / Linux | Windows
+----        | ----
+[![Build Status](https://travis-ci.org/finnp/node-appveyor.svg?branch=master)](https://travis-ci.org/finnp/node-appveyor) | [![Windows Build status](http://img.shields.io/appveyor/ci/finnp/node-appveyor.svg)](https://ci.appveyor.com/project/finnp/node-appveyor/branch/master)
 
 A javascriptable CLI for AppVeyor for node projects. It is basically the
 AppVeyor equivalent of [travisjs](https://www.npmjs.org/package/travisjs).
