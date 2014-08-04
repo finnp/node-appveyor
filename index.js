@@ -1,0 +1,77 @@
+var request = require('request')
+var ghslug = require('github-slug')
+var EventEmitter = require('events').EventEmitter
+var extend = require('util').inherits
+
+extend(AppVeyor, EventEmitter)
+module.exports = AppVeyor
+
+function AppVeyor(configstore) {
+  this.configstore = configstore
+  this.headers = {
+    'User-Agent': 'node-appveyor'
+  }
+}
+
+AppVeyor.prototype.auth = function (token) {
+  var savedToken = this.configstore.get('token', token)
+  if(!token) {
+    var savedToken = this.configstore.get('token', token)
+    if(savedToken) {
+      this.emit('token', savedToken)
+    } else {
+      this.emit('error', new Error('You have to specify a token'))
+    }
+  } else {
+    this.configstore.set('token', token)
+    this.emit('token', token)
+  }
+}
+
+AppVeyor.prototype.hook = function () {
+  var self = this
+  // get auth token
+  self._getToken(function (token) {
+    self.headers.Authorization = 'Bearer ' + token
+    // get github slug for the directory
+    ghslug(process.cwd(), function (err, slug) {
+      if(err) {
+        self.emit('error', err)
+        return
+      }
+      
+      var opts = {}
+      opts.json = {
+        repositoryProvider: 'gitHub',
+        repositoryName: slug
+      }
+      opts.method = 'POST'
+      opts.url = 'https://ci.appveyor.com/api/projects'
+      opts.headers = self.headers
+
+      request(opts, function (err, res, data) {
+        if(err) {
+          self.emit('error', err)
+          return
+        }
+        if(data.created) {
+          self.emit('hook', slug)
+        } else {
+          self.emit('error', new Error('Could not hook project - ' + data.message))
+        }
+
+    })  
+    })
+  })
+  
+}
+
+AppVeyor.prototype._getToken = function (cb) {
+  var token = this.configstore.get('token')
+  if(token) {
+    cb(token)
+  } else {
+    this.emit('error', new Error('You first have to auth with a token.'))
+  }
+}
+  

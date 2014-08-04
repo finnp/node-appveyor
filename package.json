@@ -1,0 +1,34 @@
+{
+  "name": "appveyor",
+  "version": "0.0.0",
+  "description": "A CLI for AppVeyor",
+  "main": "index.js",
+  "bin": {
+    "appveyor": "./appveyor.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/finnp/node-appveyor.git"
+  },
+  "keywords": [
+    "AppVeyor",
+    "CI",
+    "testing",
+    "windows"
+  ],
+  "author": "Finn Pauls",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/finnp/node-appveyor/issues"
+  },
+  "homepage": "https://github.com/finnp/node-appveyor",
+  "dependencies": {
+    "configstore": "^0.3.1",
+    "github-slug": "0.0.1",
+    "nomnom": "^1.8.0",
+    "request": "^2.39.0"
+  }
+}
