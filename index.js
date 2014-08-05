@@ -1,6 +1,7 @@
 var request = require('request')
 var ghslug = require('github-slug')
-var Configstore = require('configstore');
+var Configstore = require('configstore')
+var open = require('open')
 var EventEmitter = require('events').EventEmitter
 var extend = require('util').inherits
 var fs = require('fs')
@@ -85,6 +86,12 @@ AppVeyor.prototype.badge = function (stream) {
     }
     stream.write('[![Windows Build status](http://img.shields.io/appveyor/ci/' + slug + '.svg)]')
     stream.write('(https://ci.appveyor.com/project/' + slug + '/branch/master)\n')
+  })
+}
+
+AppVeyor.prototype.open = function () {
+  ghslug(process.cwd(), function (err, slug) {
+    open('https://ci.appveyor.com/project/' + slug + '/branch/master')
   })
 }
 

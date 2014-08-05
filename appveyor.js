@@ -17,6 +17,8 @@ appveyor.on('hook', function (slug) {
 
 var program = require('nomnom').script('appveyor')
 
+program.help('Usage for commands: appveyor <command> --help')
+
 program.command('auth')
   .help('set the auth token for AppVeyor')
   .option('token', {
@@ -43,6 +45,12 @@ program.command('badge')
   .help('print the text for the badge (shields.io)')
   .callback(function (opts) {
     appveyor.badge(process.stdout)
+  })
+  
+program.command('open')
+  .help('open AppVeyor page')
+  .callback(function (opts) {
+    appveyor.open()
   })
   
 program.parse()
