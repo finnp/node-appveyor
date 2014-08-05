@@ -11,8 +11,9 @@ appveyor.on('token', function (token) {
   console.log('Token is set to ' + token)
 })
 
-appveyor.on('hook', function (slug) {
-  console.log('Project ' + slug + ' activated')
+appveyor.on('hook', function (data) {
+  var already = !data.new ? ' already' : ''
+  console.log('Project ' + data.slug + already + ' activated')
 })
 
 var program = require('nomnom').script('appveyor')
@@ -23,7 +24,7 @@ program.command('auth')
   .help('set the auth token for AppVeyor')
   .option('token', {
     abbr: 't',
-    help: 'the AppVeyor API token'
+    help: 'the AppVeyor API token (https://ci.appveyor.com/api-token)'
   })
   .callback(function (opts) {
     appveyor.auth(opts.token)

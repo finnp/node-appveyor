@@ -45,29 +45,38 @@ AppVeyor.prototype.hook = function () {
       }
       
       var opts = {}
-      opts.json = {
-        repositoryProvider: 'gitHub',
-        repositoryName: slug
-      }
-      opts.method = 'POST'
-      opts.url = 'https://ci.appveyor.com/api/projects'
+      opts.url = 'https://ci.appveyor.com/api/projects/' + slug
       opts.headers = self.headers
-
+      
+      // check if it exists to not create duplicates
       request(opts, function (err, res, data) {
-        if(err) {
-          self.emit('error', err)
+        if('project' in JSON.parse(data)) {
+          self.emit('hook', {slug: slug, new: false})
           return
         }
-        if(data.created) {
-          self.emit('hook', slug)
-        } else {
-          self.emit('error', new Error('Could not hook project - ' + data.message))
+        var opts = {}
+        opts.json = {
+          repositoryProvider: 'gitHub',
+          repositoryName: slug
         }
+        opts.method = 'POST'
+        opts.url = 'https://ci.appveyor.com/api/projects'
+        opts.headers = self.headers
 
+        request(opts, function (err, res, data) {
+          if(err) {
+            self.emit('error', err)
+            return
+          }
+          if(data.created) {
+            self.emit('hook', {slug: slug, new: true})
+          } else {
+            self.emit('error', new Error('Could not hook project - ' + data.message))
+          }
+        })  
+      })
     })  
-    })
   })
-  
 }
 
 AppVeyor.prototype.yml = function (stream) {

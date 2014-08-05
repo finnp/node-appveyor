@@ -14,7 +14,7 @@ var store = {
 // right now only the hook function is tested
 
 test('hook', function (t) {
-  t.plan(1)
+  t.plan(2)
   
   store.set('token', 'testtoken')
   var appveyor = new AppVeyor(store)
@@ -24,14 +24,19 @@ test('hook', function (t) {
       'Authorization': 'Bearer testtoken'
     }
   })
+  
+  .get('/api/projects/finnp/node-appveyor')
+  .reply(200, {message: 'not exists'})
+  
   .post('/api/projects')
   .reply(200, {created: 'randomtruthytimestamp'})
   
   
   appveyor.on('error', t.fail)
   
-  appveyor.on('hook', function () {
+  appveyor.on('hook', function (data) {
     t.pass('Hook event was called')
+    t.ok(data.new, 'new hook')
   })
   
   appveyor.hook()
