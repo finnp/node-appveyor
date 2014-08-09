@@ -13,10 +13,13 @@ Usage: appveyor <command>
 
 command
   auth      set the auth token for AppVeyor
+  init      initialize AppVeyor project (yml and hook)
   hook      activate AppVeyor for the current project
   yml       create a appveyor.yml file in the current directory
   badge     print the text for the badge (shields.io)
   open      open AppVeyor page
+
+Usage for commands: appveyor <command> --help
 ```
 
 The commands map to the specific functions. For now look at
