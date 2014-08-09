@@ -17,14 +17,20 @@ function AppVeyor(configstore) {
   }
 }
 
-AppVeyor.prototype.auth = function (token) {
+AppVeyor.prototype.auth = function (opts) {
+  if(opts.delete) {
+    this.configstore.del('token')
+    this.emit('auth_deleted')
+    return
+  }
+  var token = opts.token
   var savedToken = this.configstore.get('token', token)
   if(!token) {
     var savedToken = this.configstore.get('token', token)
     if(savedToken) {
       this.emit('token', savedToken)
     } else {
-      this.emit('error', new Error('You have to specify a token'))
+      this.emit('error', new Error('You have to specify a token. (https://ci.appveyor.com/api-token)'))
     }
   } else {
     this.configstore.set('token', token)
@@ -109,7 +115,7 @@ AppVeyor.prototype._getToken = function (cb) {
   if(token) {
     cb(token)
   } else {
-    this.emit('error', new Error('You first have to auth with a token.'))
+    this.emit('error', new Error('No auth. Run `appveyor auth <appveyor token>` first.'))
   }
 }
   

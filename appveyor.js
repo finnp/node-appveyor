@@ -16,6 +16,10 @@ appveyor.on('hook', function (data) {
   console.log('Project ' + data.slug + already + ' activated')
 })
 
+appveyor.on('auth_deleted', function () {
+  console.log('Authentification removed.')
+})
+
 var program = require('nomnom').script('appveyor')
 
 program.help('Usage for commands: appveyor <command> --help')
@@ -24,10 +28,16 @@ program.command('auth')
   .help('set the auth token for AppVeyor')
   .option('token', {
     abbr: 't',
-    help: 'the AppVeyor API token (https://ci.appveyor.com/api-token)'
+    help: 'the AppVeyor API token (https://ci.appveyor.com/api-token)',
+    position: 1
+  })
+  .option('delete', {
+    abbr: 'd',
+    help: 'delete the auth',
+    flag: true
   })
   .callback(function (opts) {
-    appveyor.auth(opts.token)
+    appveyor.auth(opts)
   })
   
 program.command('init')
