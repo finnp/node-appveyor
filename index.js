@@ -82,8 +82,8 @@ AppVeyor.prototype.hook = function () {
 AppVeyor.prototype.yml = function (stream) {
   var from = fs.createReadStream(path.join(__dirname, 'appveyor.yml'))
   from.pipe(fs.createWriteStream(path.join(process.cwd(), 'appveyor.yml')))
-  if(stream) 
-    from.pipe(stream)
+
+  return from
 }
 
 AppVeyor.prototype.badge = function (stream) {

@@ -30,6 +30,15 @@ program.command('auth')
     appveyor.auth(opts.token)
   })
   
+program.command('init')
+  .help('initialize AppVeyor project (yml and hook)')
+  .callback(function (opts) {
+    console.log('Writing appveyor.yml..')
+    appveyor.yml()
+    console.log('Activating hook..')
+    appveyor.hook()
+  })
+
 program.command('hook')
   .help('activate AppVeyor for the current project')
   .callback(function (opts) {
